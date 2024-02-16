@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2023 TweetWallFX
+ * Copyright (c) 2015-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,8 +45,14 @@ final class TwitterMediaTweetEntry extends BaseTwitterTweetEntry<MediaEntity> im
     }
 
     @Override
-    public String getMediaUrl() {
-        return getT().getMediaURL();
+    public String getMediaUrl(SizeHint sizeHint) {
+        return switch (sizeHint) {
+            case THUMB -> "%s:thumb".formatted(getT().getMediaURL());
+            case SMALL -> "%s:small".formatted(getT().getMediaURL());
+            case MEDIUM -> "%s:medium".formatted(getT().getMediaURL());
+            case LARGE -> "%s:large".formatted(getT().getMediaURL());
+            case null -> getT().getMediaURL();
+        };
     }
 
     @Override
@@ -72,7 +78,7 @@ final class TwitterMediaTweetEntry extends BaseTwitterTweetEntry<MediaEntity> im
     public String toString() {
         return createToString(this, map(
                 "id", getId(),
-                "mediaUrl", getMediaUrl(),
+                "mediaUrl", getMediaUrl(null),
                 "sizes", getSizes()
         ), super.toString());
     }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2024 TweetWallFX
+ * Copyright (c) 2022-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -116,10 +116,8 @@ public class ShowSchedule implements Step {
             int col = 0;
             int row = 0;
 
-            Iterator<SessionData> iterator = dataProvider.getFilteredSessionData().iterator();
             String oldRoom = null;
-            while (iterator.hasNext()) {
-                var sessionData = iterator.next();
+            for (SessionData sessionData : dataProvider.getFilteredSessionData()) {
                 if (null == oldRoom) {
                     oldRoom = sessionData.room.getName();
                 }
@@ -266,7 +264,7 @@ public class ShowSchedule implements Step {
         if (config.showTags) {
             var tags = new FlowPane();
             tags.getStyleClass().add("tags");
-            sessionData.tags.stream().forEach(tag -> {
+            sessionData.tags.forEach(tag -> {
                 var tagLabel = new Label(tag);
                 tagLabel.getStyleClass().add("tagLabel");
                 tags.getChildren().add(tagLabel);

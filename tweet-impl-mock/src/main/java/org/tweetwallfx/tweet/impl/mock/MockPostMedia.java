@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2024 TweetWallFX
+ * Copyright (c) 2024-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ public record MockPostMedia(long id, int with, int height) implements MediaTweet
     }
 
     @Override
-    public String getMediaUrl() {
+    public String getMediaUrl(SizeHint sizeHint) {
         return "https://picsum.photos/id/%s/%s/%s".formatted(id, height, with);
     }
 
@@ -55,7 +55,7 @@ public record MockPostMedia(long id, int with, int height) implements MediaTweet
 
     @Override
     public String getText() {
-        return getMediaUrl();
+        return getMediaUrl(null);
     }
 
     @Override

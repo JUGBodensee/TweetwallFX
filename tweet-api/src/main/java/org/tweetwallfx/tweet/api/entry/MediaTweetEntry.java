@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2019 TweetWallFX
+ * Copyright (c) 2015-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,9 +37,10 @@ public interface MediaTweetEntry extends TweetEntry {
     /**
      * Returns the media URL.
      *
+     * @param sizeHint optional size hint
      * @return the media URL
      */
-    String getMediaUrl();
+    String getMediaUrl(SizeHint sizeHint);
 
     /**
      * Returns size variations of the media.
@@ -47,6 +48,10 @@ public interface MediaTweetEntry extends TweetEntry {
      * @return size variations of the media
      */
     Map<Integer, Size> getSizes();
+
+    enum SizeHint {
+        THUMB, SMALL, MEDIUM, LARGE
+    }
 
     interface Size extends java.io.Serializable {
 

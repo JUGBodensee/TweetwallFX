@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2023 TweetWallFX
+ * Copyright (c) 2018-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,10 +53,11 @@ public class ImageContentFilterStep implements FilterStep<Tweet> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageContentFilterStep.class);
     private static final Map<Integer, Function<MediaTweetEntry, String>> MTE_SIZE_TO_URL_FUNCTIONS = Map.of(
-            0, mte -> mte.getMediaUrl() + ":thumb",
-            1, mte -> mte.getMediaUrl() + ":small",
-            2, mte -> mte.getMediaUrl() + ":medium",
-            3, mte -> mte.getMediaUrl() + ":large");
+            0, mte -> mte.getMediaUrl(MediaTweetEntry.SizeHint.THUMB),
+            1, mte -> mte.getMediaUrl(MediaTweetEntry.SizeHint.SMALL),
+            2, mte -> mte.getMediaUrl(MediaTweetEntry.SizeHint.MEDIUM),
+            3, mte -> mte.getMediaUrl(MediaTweetEntry.SizeHint.LARGE)
+    );
 
     private final Config config;
     private final ImageContentAnalysis.SafeSearch requiredSafeSearch;

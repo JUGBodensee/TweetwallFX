@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2024 TweetWallFX
+ * Copyright (c) 2024-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,6 +69,7 @@ public class MockTweeter implements Tweeter {
     private final List<Consumer<Tweet>> postConsumers;
     private final Set<PostEntry> posts;
     private final Map<Integer, User> users;
+
     private ScheduledFuture<?> postTask;
 
     /**
