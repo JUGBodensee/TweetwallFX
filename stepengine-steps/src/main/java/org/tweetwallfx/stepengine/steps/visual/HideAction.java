@@ -43,20 +43,27 @@ import static org.tweetwallfx.util.ToString.map;
  */
 public class HideAction extends ActionStep<Visualization.Hideable> {
 
+    private final Config config;
+
     public HideAction(Config config, Visualization.Hideable hideable) {
         super(hideable);
+        this.config = config;
     }
 
     @Override
-    public void doStep(StepEngine.MachineContext context) {
+    public void perform(Visualization.Context context) {
         getVisualization().doHide(context);
-        context.proceed();
     }
 
     @Override
     public Duration preferredStepDuration(StepEngine.MachineContext context) {
         return super.preferredStepDuration(context);
     }
+
+    @Override
+    public String toString() {
+        return "HideAction for " + config.getVisualizationIdentifier();
+    };
 
     /**
      * Implementation of {@link Step.Factory} as Service implementation creating

@@ -25,6 +25,7 @@ package org.tweetwallfx.stepengine.api;
 
 import java.util.Collection;
 import java.util.Collections;
+import javafx.scene.layout.Pane;
 import org.tweetwallfx.stepengine.api.StepEngine.MachineContext;
 import org.tweetwallfx.stepengine.api.config.StepEngineSettings;
 
@@ -42,9 +43,9 @@ public interface Visualization {
          * Shows the visualization. This method will not be called on the
          * FXApplication Thread.
          *
-         * @param machineContext the MachineContext
+         * @param context the Visualization.Context
          */
-        public void doShow(MachineContext machineContext);
+        public void doShow(Context context);
     }
 
     /**
@@ -56,9 +57,50 @@ public interface Visualization {
          * Hides the visualization. This method will not be called on the
          * FXApplication Thread.
          *
-         * @param machineContext the MachineContext
+         * @param context the Visualization.Context
          */
-        public void doHide(MachineContext machineContext);
+        public void doHide(Context context);
+    }
+
+    /**
+     * A context passed to state changing methods of a visualization as part of
+     * the step engine triggers. The actual implementation delegates to the
+     * associated MachineContext from the StepEngine, but this may change in the future
+     */
+    public static final class Context {
+
+        private final MachineContext machineContext;
+
+        /**
+         * Creates a new context using the step engine {@link MachineContext}.
+         * @param machineContext the context to delgate to
+         * @return the new context
+         */
+        static final Context create(MachineContext machineContext) {
+            return new Context(machineContext);
+        }
+
+        private Context(MachineContext machineContext) {
+            this.machineContext = machineContext;
+        }
+
+        /**
+         * Returns a {@link DataProvider} as per requested class.
+         * @param <T> genric type of the {@link DataProvider}
+         * @param klazz class describing the {@link DataProvider}
+         * @return a {@link DataProvider} instance
+         */
+        public <T extends DataProvider> T getDataProvider(final Class<T> klazz) {
+            return machineContext.getDataProvider(klazz);
+        }
+
+        /**
+         * Returns the {@link Pane} to interact with for showing {@link Visualization}s
+         * @return the pane to interact with
+         */
+        public Pane getWallPane() {
+            return machineContext.get("WallPane", Pane.class);
+        }
     }
 
     /**

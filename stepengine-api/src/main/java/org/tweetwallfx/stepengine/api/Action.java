@@ -24,34 +24,13 @@
 package org.tweetwallfx.stepengine.api;
 
 /**
- * A special Step in the {@link StepEngine}. It represents an action triggered against an existing
- * visualization.
+ * An action triggered against an existing visualization.
  */
-public abstract class ActionStep<V extends Visualization> implements Step, Action {
+public interface Action {
 
-    private final V visualization;
-
-    protected ActionStep(V visualization) {
-        this.visualization = visualization;
-    }
-
-    protected final V getVisualization() {
-        return visualization;
-    }
-
-    @Override
-    public final void initStep(StepEngine.MachineContext context) {
-        Step.super.initStep(context);
-    }
-
-    @Override
-    final public void doStep(StepEngine.MachineContext context) {
-        perform(Visualization.Context.create(context));
-        context.proceed();
-    }
-
-    @Override
-    public final boolean requiresPlatformThread() {
-        return false;
-    }
+    /**
+     * Performs the action.
+     * @param context to be used for performing the action
+     */
+    public void perform(Visualization.Context context);
 }

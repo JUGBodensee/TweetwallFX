@@ -44,20 +44,27 @@ import static org.tweetwallfx.util.ToString.map;
  */
 public class ShowAction extends ActionStep<Visualization.Showable> {
 
+    private final Config config;
+
     public ShowAction(Config config, Showable showable) {
         super(showable);
+        this.config = config;
     }
 
     @Override
-    public void doStep(StepEngine.MachineContext context) {
+    public void perform(Visualization.Context context) {
         getVisualization().doShow(context);
-        context.proceed();
     }
 
     @Override
     public Duration preferredStepDuration(StepEngine.MachineContext context) {
         return super.preferredStepDuration(context);
     }
+
+    @Override
+    public String toString() {
+        return "ShowAction for " + config.getVisualizationIdentifier();
+    };
 
     /**
      * Implementation of {@link Step.Factory} as Service implementation creating

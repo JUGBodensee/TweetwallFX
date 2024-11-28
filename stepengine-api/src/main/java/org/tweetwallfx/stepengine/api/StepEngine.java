@@ -283,7 +283,7 @@ public final class StepEngine {
             Step step = stepIterator.next();
             context.restrictAvailableDataProviders(stepIterator.getRequiredDataProviders(step));
             while (step.shouldSkip(context)) {
-                LOG.info("Skip step: {}", step.getClass().getSimpleName());
+                LOG.info("Skip step: {}", step);
                 step = stepIterator.next();
                 context.restrictAvailableDataProviders(stepIterator.getRequiredDataProviders(step));
             }
@@ -319,21 +319,21 @@ public final class StepEngine {
             final long delay = duration.toMillis() - doStateDuration;
             if (delay > 0) {
                 try {
-                    LOG.info("sleep({} ms) for step {}", delay, step.getClass().getSimpleName());
+                    LOG.info("sleep({} ms) for step {}", delay, step);
                     Thread.sleep(delay);
                 } catch (InterruptedException ex) {
                     LOG.error("Sleeping for {} interrupted!", delay, ex);
                     Thread.currentThread().interrupt();
                 }
             }
-            LOG.info("waiting (possible) for step to call proceed {}", step.getClass().getSimpleName());
+            LOG.info("waiting (possible) for step to call proceed {}", step);
             try {
                 // wait for proceed being called
                 asyncProceed.awaitAdvanceInterruptibly(asyncProceed.arrive(), 60, TimeUnit.SECONDS);
             } catch (InterruptedException ex) {
                 LOG.error("Await proceed interrupted", ex);
             } catch (TimeoutException ex) {
-                LOG.error("Await proceed timed out", ex);
+                LOG.error("Await proceed timed out for " + step, ex);
             }
         }
     }

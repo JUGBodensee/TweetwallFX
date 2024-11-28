@@ -242,6 +242,8 @@ public final class WordleSkin extends SkinBase<Wordle> {
 
         final StepEngine s = new StepEngine();
         s.getContext().put("WordleSkin", this);
+        s.getContext().put("WallPane", this.getPane());
+        s.getContext().put("WallNode", this.getNode());
         LOG.info("Prepare StepMachine done");
         s.go();
     }
