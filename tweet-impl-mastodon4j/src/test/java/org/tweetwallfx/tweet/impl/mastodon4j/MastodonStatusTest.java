@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2023 TweetWallFX
+ * Copyright (c) 2023-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,9 +32,13 @@ import java.time.ZonedDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MastodonStatusTest {
+    public static final String STATUS_CONTENT = """
+            <p>the status #message html to @TweetwallFX, a new line:
+            some nice image <img src="https://somehost.somedomain/image.jpg alt="some image">
+            and a <a href="http://somehost.somedomain/">#special link</a> to some content for <b>@reinhapa</b></p>""";
     ZonedDateTime createdAt = ZonedDateTime.now(ZoneId.systemDefault());
     MastodonStatus status = new MastodonStatus(new Status("42", null, createdAt, null,
-            "<p>the status message html</p>", null, null, null, null,
+            STATUS_CONTENT,  null, null, null, null,
             null, null, null, null, 33, 22, null,
             null, null, null, null, null, null, "german",
             null, null, null, true, null, null, null, null));
@@ -107,7 +111,9 @@ class MastodonStatusTest {
 
     @Test
     void getText() {
-        assertThat(status.getText()).isEqualTo("the status message html");
+        assertThat(status.getText()).isEqualTo("""
+                the status #message html to @TweetwallFX, a new line: \
+                some nice image and a #special link to some content for @reinhapa""");
         assertThat(statusWithoutOptionals.getText()).isEmpty();
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2022 TweetWallFX
+ * Copyright (c) 2018-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,10 +48,10 @@ public final class PhotoImageCache extends URLContentCacheBase {
     static {
         final Map<Integer, Function<MediaTweetEntry, String>> tmp = new HashMap<>();
 
-        tmp.put(0, mte -> mte.getMediaUrl() + ":thumb");
-        tmp.put(1, mte -> mte.getMediaUrl() + ":small");
-        tmp.put(2, mte -> mte.getMediaUrl() + ":medium");
-        tmp.put(3, mte -> mte.getMediaUrl() + ":large");
+        tmp.put(0, mte -> mte.getMediaUrl(MediaTweetEntry.SizeHint.THUMB));
+        tmp.put(1, mte -> mte.getMediaUrl(MediaTweetEntry.SizeHint.SMALL));
+        tmp.put(2, mte -> mte.getMediaUrl(MediaTweetEntry.SizeHint.MEDIUM));
+        tmp.put(3, mte -> mte.getMediaUrl(MediaTweetEntry.SizeHint.LARGE));
 
         MTE_SIZE_TO_URL_FUNCTIONS = Collections.unmodifiableMap(tmp);
     }

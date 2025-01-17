@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2023 TweetWallFX
+ * Copyright (c) 2015-2025 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,14 @@
 package org.tweetwallfx.tweet.impl.mastodon4j;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Safelist;
+import org.jsoup.select.NodeTraversor;
+import org.jsoup.select.NodeVisitor;
 import org.mastodon4j.core.api.entities.Status;
 import org.tweetwallfx.tweet.api.Tweet;
 import org.tweetwallfx.tweet.api.User;
@@ -36,14 +42,42 @@ import org.tweetwallfx.tweet.api.entry.UrlTweetEntry;
 import org.tweetwallfx.tweet.api.entry.UserMentionTweetEntry;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 final class MastodonStatus implements Tweet {
-
     private final Status status;
+    private final String text;
+    private final List<HashtagTweetEntry> hashtagTweetEntryList;
 
     public MastodonStatus(Status status) {
         this.status = status;
+        Cleaner cleaner = new Cleaner(Safelist.none().addTags("img", "movie", "a"));
+        Document document = cleaner.clean(Jsoup.parse(status.content()));
+        hashtagTweetEntryList = new ArrayList<>();
+        NodeTraversor.traverse(new NodeVisitor() {
+            @Override
+            public void head(Node node, int i) {
+                if (node instanceof TextNode textNode) {
+                    //String wholeText = textNode.getWholeText();
+                    hashtagTweetEntryList.add(null);
+                } else if (node instanceof Element element) {
+                    switch (element.nodeName()) {
+                        case "a" -> {
+                        }
+                        case "img" -> {
+                        }
+                        case "movie" -> {
+                        }
+                        default -> {
+                        }
+                    }
+                }
+            }
+        }, document);
+        this.text = document.text();
     }
 
     @Override
@@ -106,8 +140,7 @@ final class MastodonStatus implements Tweet {
 
     @Override
     public String getText() {
-        Cleaner cleaner = new Cleaner(Safelist.none());
-        return cleaner.clean(Jsoup.parse(status.content())).text();
+        return text;
     }
 
     @Override
